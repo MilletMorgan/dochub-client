@@ -1,6 +1,6 @@
 <template>
   <div class="py-20">
-    <h1 class="text-7xl text-center text-white">Dochub</h1>
+    <h1 class="text-7xl text-center dark:text-white">Dochub</h1>
   </div>
 
   <div class="grid grid-cols-2 w-8/12 mx-auto shadow-2xl">
