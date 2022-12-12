@@ -1,17 +1,30 @@
 <template>
   <div class="h-screen bg-gray-100 dark:bg-slate-900">
+    <div class="grid grid-cols-12">
+      <div class="col-span-2 shadow h-screen">
+        <div class="ml-5 mt-10">
+          <h1 class="text-4xl mb-10">Dochub</h1>
+          <ul class="">
+            <li class="mb-5">
+              <router-link :to="{name: 'takeAppointment'}" class="text-blue-400 hover:text-blue-500">
+                Prendre un rendez-vous
+              </router-link>
+            </li>
+            <li>
+              <router-link :to="{name: 'myAppointments'}" class="text-blue-400 hover:text-blue-500">Mes rendez-vous
+              </router-link>
+            </li>
+          </ul>
+        </div>
 
-<!--
-    <router-view/>
--->
-
-    <take-appointment/>
+      </div>
+      <div class="col-span-10">
+        <router-view />
+      </div>
+    </div>
 
     <div class="absolute top-0 right-0 m-5">
-      <button
-        @click="toggleDark()"
-        class="px-4 py-2 text-purple-600"
-      >
+      <button @click="toggleDark()" class="px-4 py-2 text-purple-600">
         <svg
           v-if="isDark"
           xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +63,6 @@
 import { useDark, useToggle } from "@vueuse/core";
 import { useUserStore } from "./store.js";
 //import { useRouter } from "vue-router";
-import TakeAppointment from "./components/appointment/TakeAppointment.vue";
 
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
@@ -60,5 +72,5 @@ const store = useUserStore();
 //const isLogged = store.getUser.loggedIn;
 console.log(store.getUser.loggedIn);
 //if (!isLogged)
-  // router.push({ name: "login" });
+// router.push({ name: "login" });
 </script>
