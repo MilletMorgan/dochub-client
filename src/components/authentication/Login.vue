@@ -77,7 +77,7 @@ export default defineComponent({
       email: "",
       password: "",
     });
-    const router = useRouter()
+    const router = useRouter();
 
     const login = async () => {
       try {
