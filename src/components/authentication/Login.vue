@@ -2,7 +2,7 @@
   <div class="py-5 px-4 bg-white rounded-tr rounded-br">
     <h3 class="text-2xl font-bold mb-6">Connexion</h3>
 
-    <form action="">
+    <form @submit.prevent="login">
       <div class="mb-6">
         <label class="grid grid-cols-12">
           <svg
@@ -25,6 +25,7 @@
             type="email"
             name="email"
             id="email"
+            v-model="user.email"
             class="input-text"
           />
         </label>
@@ -52,21 +53,54 @@
           name="password"
           id="password"
           class="input-text"
+          v-model="user.password"
         />
       </label>
 
-      <button
-        type="submit"
-        class="btn-primary"
-      >
-        Se connecter
-      </button>
+      <button type="submit" class="btn-primary">Se connecter</button>
     </form>
   </div>
 </template>
 
 <script>
-export default {
+import { defineComponent, ref } from "vue";
+import { auth } from "../../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useUserStore } from "../../store.js";
+import { useRouter } from "vue-router";
+
+export default defineComponent({
   name: "Login",
-};
+  setup() {
+    const store = useUserStore();
+    const user = ref({
+      email: "",
+      password: "",
+    });
+    const router = useRouter()
+
+    const login = async () => {
+      try {
+        const response = await signInWithEmailAndPassword(
+          auth,
+          user.value.email,
+          user.value.password
+        );
+
+        store.setUser(response.user);
+        store.setLoggedIn(true);
+
+        router.push({ name: "takeAppointment" });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    return {
+      user,
+      login,
+      store,
+    };
+  },
+});
 </script>

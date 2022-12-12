@@ -21,12 +21,7 @@
           </svg>
           <span class="col-span-10">Email</span>
 
-          <input
-            type="email"
-            name="email"
-            id="email"
-            class="input-text"
-          />
+          <input type="email" name="email" id="email" class="input-text" />
         </label>
       </div>
 
@@ -55,18 +50,45 @@
         />
       </label>
 
-      <button
-        type="submit"
-        class="btn-primary"
-      >
-        S'inscrire
-      </button>
+      <button type="submit" class="btn-primary">S'inscrire</button>
     </form>
   </div>
+  <button class="btn-primary" type="button" @click="register">TEST REGISTER</button>
 </template>
 
 <script>
+import { auth } from "../../firebase";
+import {
+  signInWithEmailAndPassword,
+  /*onAuthStateChanged,
+  signOut,*/
+} from "firebase/auth";
+
 export default {
-  name: 'Register',
+  name: "Register",
+  data() {
+    return {
+      user: {
+        username: "mmillet",
+        email: "millet.morgan5@gmail.com",
+        password: "Lx2bh36mmst!"
+      }
+    };
+  },
+  methods: {
+    async register() {
+      try {
+        await signInWithEmailAndPassword(
+          auth,
+          this.user.email,
+          this.user.password
+        );
+
+        console.log("Login successful");
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
 };
 </script>

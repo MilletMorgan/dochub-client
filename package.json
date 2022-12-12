@@ -10,7 +10,12 @@
   },
   "dependencies": {
     "@vueuse/core": "^9.6.0",
-    "vue": "^3.2.41"
+    "axios": "^1.2.1",
+    "firebase": "^9.15.0",
+    "pinia": "^2.0.28",
+    "vue": "^3.2.41",
+    "vue-router": "4",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
