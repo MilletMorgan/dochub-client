@@ -1,35 +1,118 @@
-<script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <div>
-    <h1 class="text-3xl font-bold underline">
-      Hello world!
-    </h1>
-    
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="h-screen bg-gray-100 dark:bg-slate-900">
+    <div class="grid grid-cols-12">
+      <div class="col-span-3 shadow-2xl h-screen dark:bg-white">
+        <div class="ml-5 mt-10">
+          <router-link class="text-4xl mb-10" to="/">Dochub</router-link>
+          <ul class="">
+            <li>
+              <!--              {{ user.email ? user.email : "" }}-->
+            </li>
+            <li class="mb-5">
+              <button @click="logout">Déconnexion</button>
+            </li>
+            <li class="mb-5">
+              <router-link
+                :to="{ name: 'takeAppointment' }"
+                class="text-blue-400 hover:text-blue-500"
+              >
+                Prendre un rendez-vous
+              </router-link>
+            </li>
+            <li>
+              <router-link
+                :to="{ name: 'myAppointments' }"
+                class="text-blue-400 hover:text-blue-500"
+                >Mes rendez-vous
+              </router-link>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-span-9">
+        <router-view />
+      </div>
+    </div>
+
+    <div class="absolute top-0 right-0 m-5">
+      <button @click="toggleDark()" class="px-4 py-2 text-purple-600">
+        <svg
+          v-if="isDark"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="w-6 h-6"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        <svg
+          v-else
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-6 h-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
+          />
+        </svg>
+      </button>
+    </div>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
+<script setup>
+import { useDark, useToggle } from "@vueuse/core";
+import { useUserStore } from "./stores/user.js";
+import { useRouter } from "vue-router";
+
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
+
+const router = useRouter();
+const store = useUserStore();
+
+//const { user } = storeToRefs(store);
+const user = JSON.parse(localStorage.getItem("user"));
+
+if (!user) {
+  router.push("/login");
+} else {
+  router.push("/take-appointment");
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+const logout = () => {
+  store.logout();
+  router.push("/login");
+  console.log(localStorage.getItem("user"));
+};
+
+const notif = () => {
+  Notification.requestPermission().then(function (result) {
+    if (result === "granted") {
+      randomNotification();
+    }
+  });
+};
+
+function randomNotification() {
+  const notifTitle = "title";
+  const notifBody = "body";
+  const options = {
+    body: notifBody,
+  };
+  new Notification(notifTitle, options);
+  //setTimeout(randomNotification, 30000);
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+
+notif();
+</script>
