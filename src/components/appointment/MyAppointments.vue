@@ -1,11 +1,16 @@
 <template>
-  <h1 class="text-center text-2xl pt-12 mb-20">Mes rendes-vous</h1>
+  <h1 class="text-center text-4xl pt-12 mb-20 dark:text-white font-bold">
+    Mes rendes-vous
+  </h1>
 
   <div v-for="{ id, appointmentDate, doctorData } in myAppointments" :key="id">
-    <div class="shadow w-6/12 mx-auto p-10">
-      <div class="grid grid-cols-4">
-        <div class="col-span-4">
-          <p>Dr. {{ doctorData.fullname }}</p>
+    <div class="shadow w-6/12 mx-auto p-10 mb-10 dark:bg-white dark:shadow-2xl">
+      <div class="grid grid-cols-12">
+        <div class="col-span-1">
+          <img src="https://picsum.photos/50" alt="profile" class="rounded" />
+        </div>
+        <div class="col-span-11 pl-5">
+          <p class="font-bold">Dr. {{ doctorData.fullname }}</p>
           <p>appointment date: {{ appointmentDate }}</p>
         </div>
       </div>

@@ -1,3 +1,34 @@
+<script setup>
+import { ref } from "vue";
+import { auth } from "../../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useUserStore } from "../../stores/user";
+//import { useRouter } from "vue-router";
+
+const store = useUserStore();
+
+const user = ref({
+  email: "",
+  password: "",
+});
+//const router = useRouter();
+
+const login = async () => {
+  try {
+    const response = await signInWithEmailAndPassword(
+      auth,
+      user.value.email,
+      user.value.password
+    );
+
+    store.signIn(response.user);
+    console.log(login);
+  } catch (error) {
+    console.error(error);
+  }
+};
+</script>
+
 <template>
   <div class="py-5 px-4 bg-white rounded-tr rounded-br">
     <h3 class="text-2xl font-bold mb-6">Connexion</h3>
@@ -61,46 +92,3 @@
     </form>
   </div>
 </template>
-
-<script>
-import { defineComponent, ref } from "vue";
-import { auth } from "../../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { useUserStore } from "../../store.js";
-import { useRouter } from "vue-router";
-
-export default defineComponent({
-  name: "Login",
-  setup() {
-    const store = useUserStore();
-    const user = ref({
-      email: "",
-      password: "",
-    });
-    const router = useRouter();
-
-    const login = async () => {
-      try {
-        const response = await signInWithEmailAndPassword(
-          auth,
-          user.value.email,
-          user.value.password
-        );
-
-        store.setUser(response.user);
-        store.setLoggedIn(true);
-
-        router.push({ name: "takeAppointment" });
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    return {
-      user,
-      login,
-      store,
-    };
-  },
-});
-</script>

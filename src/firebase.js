@@ -12,7 +12,7 @@ const firebaseConfig = {
   projectId: "dochub-620b4",
   storageBucket: "dochub-620b4.appspot.com",
   messagingSenderId: "123679169372",
-  appId: "1:123679169372:web:053e46a9b769efffd3ff99"
+  appId: "1:123679169372:web:053e46a9b769efffd3ff99",
 };
 
 // Initialize Firebase

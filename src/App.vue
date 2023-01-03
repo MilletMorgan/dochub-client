@@ -1,24 +1,35 @@
 <template>
   <div class="h-screen bg-gray-100 dark:bg-slate-900">
     <div class="grid grid-cols-12">
-      <div class="col-span-2 shadow h-screen">
+      <div class="col-span-3 shadow-2xl h-screen dark:bg-white">
         <div class="ml-5 mt-10">
-          <h1 class="text-4xl mb-10">Dochub</h1>
+          <router-link class="text-4xl mb-10" to="/">Dochub</router-link>
           <ul class="">
+            <li>
+              {{ user.email }}
+            </li>
             <li class="mb-5">
-              <router-link :to="{name: 'takeAppointment'}" class="text-blue-400 hover:text-blue-500">
+              <button @click="logout">Déconnexion</button>
+            </li>
+            <li class="mb-5">
+              <router-link
+                :to="{ name: 'takeAppointment' }"
+                class="text-blue-400 hover:text-blue-500"
+              >
                 Prendre un rendez-vous
               </router-link>
             </li>
             <li>
-              <router-link :to="{name: 'myAppointments'}" class="text-blue-400 hover:text-blue-500">Mes rendez-vous
+              <router-link
+                :to="{ name: 'myAppointments' }"
+                class="text-blue-400 hover:text-blue-500"
+                >Mes rendez-vous
               </router-link>
             </li>
           </ul>
         </div>
-
       </div>
-      <div class="col-span-10">
+      <div class="col-span-9">
         <router-view />
       </div>
     </div>
@@ -61,16 +72,27 @@
 
 <script setup>
 import { useDark, useToggle } from "@vueuse/core";
-import { useUserStore } from "./store.js";
-//import { useRouter } from "vue-router";
+import { useUserStore } from "./stores/user.js";
+import { useRouter } from "vue-router";
 
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
-const store = useUserStore();
-//const router = useRouter();
 
-//const isLogged = store.getUser.loggedIn;
-console.log(store.getUser.loggedIn);
-//if (!isLogged)
-// router.push({ name: "login" });
+const router = useRouter();
+const store = useUserStore();
+
+//const { user } = storeToRefs(store);
+const user = JSON.parse(localStorage.getItem("user"));
+
+if (!user) {
+  router.push("/login");
+} else {
+  router.push("/take-appointment");
+}
+
+const logout = () => {
+  store.logout();
+  router.push("/login");
+  console.log(localStorage.getItem("user"));
+};
 </script>

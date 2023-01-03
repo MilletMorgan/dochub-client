@@ -1,15 +1,19 @@
 <template>
-  <h1 class="text-center text-2xl pt-12 mb-20">Prendre un rendez-vous</h1>
+  <h1 class="text-center text-4xl pt-12 mb-20 dark:text-white font-bold">
+    Prendre un rendez-vous
+  </h1>
 
-  <div v-for="{ id, fullname, address } in doctors" :key="id">
+  <div v-for="{ id, fullname } in doctors" :key="id">
     <form @submit.prevent="takeAppointment(id)">
-      <div class="shadow w-6/12 mx-auto p-10">
-        <div class="grid grid-cols-4">
-          <div class="col-span-2">
-            <p class="text-xl font-bold">Dr. {{ fullname }}</p>
-            <p>Address: {{ address }}</p>
+      <div class="shadow-2xl w-6/12 mx-auto p-10 dark:bg-white mb-10">
+        <div class="grid grid-cols-12">
+          <div class="col-span-1">
+            <img src="https://picsum.photos/50" alt="profile" class="rounded" />
           </div>
-          <div class="col-span-2">
+          <div class="col-span-5 pl-5">
+            <p class="text-xl font-bold">Dr. {{ fullname }}</p>
+          </div>
+          <div class="col-span-6">
             <label>
               Selectionnez une date de rendez-vous
               <input
@@ -18,6 +22,7 @@
                 name="appointmentDate"
                 id="appointmentDate"
                 v-model="appointment.appointmentDate"
+                class="input-text"
               />
             </label>
           </div>
@@ -32,7 +37,7 @@
 <script setup>
 import { useUserStore } from "../../store.js";
 import { db } from "../../firebase";
-import { collection, getDocs, query, addDoc } from "firebase/firestore";
+import { addDoc, collection, getDocs, query } from "firebase/firestore";
 import { onMounted, ref } from "vue";
 
 const doctors = ref([]);
@@ -42,8 +47,8 @@ const appointment = ref({
   appointmentDate: "2022-12-12T12:00",
 });
 
-const store = useUserStore();
-const user = store.getUser.user;
+// const store = useUserStore();
+// const user = store.getUser.user;
 onMounted(() => {
   getDoctors();
 });
@@ -73,6 +78,14 @@ const takeAppointment = async (doctorId) => {
     const response = await addDoc(colRef, appointment.value);
 
     console.log(response);
+
+    let db = await indexedDB.openDatabase("db");
+    let tx = db.transaction("store");
+    let store = tx.objectStore("store");
+
+    await store.put("value", "key");
+    console.log("Put is totally done");
+    await tx;
   } catch (e) {
     console.error(e);
   }
