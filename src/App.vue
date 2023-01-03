@@ -95,4 +95,24 @@ const logout = () => {
   router.push("/login");
   console.log(localStorage.getItem("user"));
 };
+
+const notif = () => {
+  Notification.requestPermission().then(function (result) {
+    if (result === "granted") {
+      randomNotification();
+    }
+  });
+};
+
+function randomNotification() {
+  const notifTitle = "title";
+  const notifBody = "body";
+  const options = {
+    body: notifBody,
+  };
+  new Notification(notifTitle, options);
+  //setTimeout(randomNotification, 30000);
+}
+
+notif();
 </script>
