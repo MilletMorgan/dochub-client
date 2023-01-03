@@ -24,6 +24,7 @@ const login = async () => {
     store.signIn(response.user);
     console.log(login);
   } catch (error) {
+    window.navigator?.vibrate?.(200);
     console.error(error);
   }
 };
