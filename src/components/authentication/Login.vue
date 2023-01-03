@@ -25,6 +25,13 @@ const login = async () => {
     console.log(login);
   } catch (error) {
     window.navigator?.vibrate?.(200);
+
+    const notifTitle = "Login failed";
+    const notifBody = "login informations are not valid.";
+    const options = {
+      body: notifBody,
+    };
+    new Notification(notifTitle, options);
     console.error(error);
   }
 };
